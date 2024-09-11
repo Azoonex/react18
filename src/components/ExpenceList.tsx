@@ -8,8 +8,10 @@ import {
     Input,
     Select,
     Text,
+    Checkbox,
+    Stack,
 } from '@chakra-ui/react';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ThemeContext } from '../context/Context';
@@ -21,6 +23,7 @@ const schema = z.object({
     description: z.string().nonempty('Invalid description'),
     utilty: z.string().nonempty('Invalid utility'),
     Enterment: z.string().nonempty('Invalid Enterment'),
+    pending: z.boolean()
 });
 
 type TypesInput = z.infer<typeof schema>;
@@ -30,6 +33,8 @@ export default function ExpenseList() {
         register,
         handleSubmit,
         formState: { errors },
+        control,
+        reset
     } = useForm < TypesInput > ({
         resolver: zodResolver(schema),
     });
@@ -37,19 +42,22 @@ export default function ExpenseList() {
     const { dataTabel, setdataTabel } = useContext(ThemeContext);
 
     const onSubmit: SubmitHandler<TypesInput> = (data) => {
+        console.log(data)
         const newData: typeTabel = {
             description: data.description,
             id: dataTabel.length + 1,
-            pending: true,
+            pending: data.pending,
             status: data.Enterment,
             utility: data.utilty,
         }
         setdataTabel((dataprvious) => [...dataprvious, newData]);
-    };
 
-    useEffect(()=>{
+        reset()
+    }
+
+    useEffect(() => {
         console.log(dataTabel)
-    },[dataTabel])
+    }, [dataTabel])
 
     return (
         <div className='container'>
@@ -76,6 +84,17 @@ export default function ExpenseList() {
                     <Text color={'red'}>
                         {errors.Enterment?.message && <p>{errors.Enterment?.message}</p>}
                     </Text>
+
+
+                    <Stack my={'3'}>
+                        <Controller
+                            name="pending"
+                            control={control}
+                            rules={{ required: true }}
+                            render={({ field }) => <Checkbox {...field} isInvalid>Checkbox</Checkbox>}
+                        />
+
+                    </Stack>
 
                     <Button type='submit' colorScheme='blue' mt={'6'}>
                         Submit

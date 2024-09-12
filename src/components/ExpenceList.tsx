@@ -1,22 +1,17 @@
-import React, { useContext, useEffect } from 'react';
 import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    Flex,
     Button,
+    Checkbox,
+    FormLabel,
     Input,
     Select,
-    Text,
-    Checkbox,
     Stack,
+    Text
 } from '@chakra-ui/react';
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ThemeContext } from '../context/Context';
-import { useId } from 'react';
-import { typeTabel } from '../context/Context';
+import { useContext, useEffect } from 'react';
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { z } from 'zod';
+import { ThemeContext, typeTabel } from '../context/Context';
 
 // Define Zod schema
 const schema = z.object({

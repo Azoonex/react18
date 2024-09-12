@@ -11,7 +11,8 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { useContext } from 'react'
-import { ThemeContext } from '../context/Context'
+import { ThemeContext, typeTabel } from '../context/Context'
+import actionConecte from '../service/actionConecte';
 
 
 export default function DataTabel() {
@@ -22,6 +23,14 @@ export default function DataTabel() {
     setdataTabel((prvious) => {
       return prvious.filter(i => i.id !== id)
     })
+  }
+
+  function fetchApi (){
+      actionConecte.fetchApi('getapi').then(res => console.log(res.data))
+  }
+
+  function removeCelTabel (id:number){
+    actionConecte.deleteUser(id).then(res => console.log(res))
   }
 
   return (
@@ -36,7 +45,7 @@ export default function DataTabel() {
             <Th>pending</Th>
           </Tr>
         </Thead>
-        {dataTabel && dataTabel.length > 0 && dataTabel.map(i => {
+        {dataTabel && dataTabel.length > 0 && dataTabel.map((i:typeTabel) => {
           return (
             <Tbody key={i.id}>
               <Tr>
